@@ -15,7 +15,6 @@ const App = () => {
     return savedGrids || Array(TOTAL_GRIDS).fill().map(() => Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill('#ffffff')));
   });
   const [currentColor, setCurrentColor] = useState('#000000');
-  const [isPainting, setIsPainting] = useState(false);
   const [isCooldown, setIsCooldown] = useState(false);
 
   useEffect(() => {
@@ -54,6 +53,9 @@ const App = () => {
       }, COOLDOWN_TIME);
       userInfoOutput.innerHTML = `Pixel painted!`;
       userInfoOutput.style.color = 'green';
+
+      // Emit an event to update the grid for other users
+      socket.emit('updateGrid', newGrids);
     } else {
       const remainingTime = (COOLDOWN_TIME - (Date.now() % COOLDOWN_TIME)) / 1000;
       userInfoOutput.innerHTML = `Sorry! Please wait ${remainingTime.toFixed(1)} seconds.`;
@@ -61,16 +63,14 @@ const App = () => {
     }
   };
 
-  const handlePainting = () => {
-    setIsPainting(true);
-  };
-
   const handleNotPainting = () => {
-    setIsPainting(false);
+    // You can add any logic related to not painting here
   };
 
   const handleClearCanvas = () => {
-    setGrids(Array(TOTAL_GRIDS).fill().map(() => Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill('#ffffff'))));
+    const newGrids = Array(TOTAL_GRIDS).fill().map(() => Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill('#ffffff')));
+    setGrids(newGrids);
+    socket.emit('updateGrid', newGrids); // Emit event to update the grid for other users
   };
 
   const countHexCodes = () => {
@@ -131,7 +131,7 @@ const App = () => {
                       border: '1px solid #ccc',
                     }}
                     onMouseDown={() => handlePixelClick(gridIndex, rowIndex, colIndex)}
-                    onMouseUp={() => handleNotPainting()}
+                    onMouseUp={handleNotPainting}
                   />
                 ))
               )}
