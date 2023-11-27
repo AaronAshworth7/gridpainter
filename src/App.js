@@ -7,7 +7,8 @@ const GRID_SIZE = 1080 / PIXEL_SIZE;
 const TOTAL_GRIDS = 3;
 const COOLDOWN_TIME = 500;
 
-const socket = io('https://demdun.org/'); // Adjust the server URL
+const socket = io(process.env.REACT_APP_SOCKET_SERVER_URL || 'http://localhost:3001');
+
 
 const App = () => {
   const [grids, setGrids] = useState([]);
