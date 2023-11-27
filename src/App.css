@@ -1,0 +1,32 @@
+/* src/App.css */
+.pixel-grid {
+  display: grid;
+  grid-template-columns: repeat(100, 1fr);
+  gap: 1px;
+}
+
+.pixel {
+  width: 10px;
+  height: 10px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+#userInfoOutput {
+  font-size: 40px;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  background-color: lightblue;
+}
+
+.container {
+  text-align: center;
+}
+
+
