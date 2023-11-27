@@ -17,12 +17,14 @@ const App = () => {
   useEffect(() => {
     // Fetch initial grid from the server when the component mounts
     socket.emit('getInitialGrid');
+    setIsCooldown(false);
   }, []);
 
   useEffect(() => {
     // Update the local state when receiving grid updates from the server
     socket.on('receiveGrid', (updatedGrids) => {
       setGrids(updatedGrids);
+      setIsCooldown(false); // Reset cooldown when receiving updates
     });
   }, []);
 

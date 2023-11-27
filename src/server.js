@@ -26,7 +26,8 @@ const getInitialGrid = (socket) => {
       console.error(err.message);
     } else {
       const initialGrid = row ? JSON.parse(row.data) : null;
-      socket.emit('receiveGrid', initialGrid || createEmptyGrid()); // Use createEmptyGrid if no data is found
+      // Use 'updateGrid' here to send the initial grid to the connecting client
+      socket.emit('updateGrid', initialGrid || createEmptyGrid());
     }
   });
 };
