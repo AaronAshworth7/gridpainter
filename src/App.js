@@ -10,19 +10,17 @@ const COOLDOWN_TIME = 500;
 const socket = io('http://localhost:3001'); // Adjust the server URL
 
 const App = () => {
-  const [grids, setGrids] = useState(() => {
-    const savedGrids = JSON.parse(localStorage.getItem('pixelGrids'));
-    return savedGrids || Array(TOTAL_GRIDS).fill().map(() => Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill('#ffffff')));
-  });
+  const [grids, setGrids] = useState([]);
   const [currentColor, setCurrentColor] = useState('#000000');
   const [isCooldown, setIsCooldown] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem('pixelGrids', JSON.stringify(grids));
-    socket.emit('updateGrid', grids);
-  }, [grids]);
+    // Fetch initial grid from the server when the component mounts
+    socket.emit('getInitialGrid');
+  }, []);
 
   useEffect(() => {
+    // Update the local state when receiving grid updates from the server
     socket.on('receiveGrid', (updatedGrids) => {
       setGrids(updatedGrids);
     });
