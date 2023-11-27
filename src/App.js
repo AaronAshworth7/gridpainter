@@ -94,7 +94,7 @@ const App = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <h2>Hex Code Leaderboard</h2>
-      <ul>
+      <ul id="hexLB">
         {Object.entries(hexCodeCounts)
           .sort(([, a], [, b]) => b - a)
           .map(([hexCode, count]) => (
